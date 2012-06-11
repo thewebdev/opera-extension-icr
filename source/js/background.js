@@ -26,14 +26,12 @@ function show(id) {
 	$(id).style.display = 'block';
 }
 
-function trueRound(value){
+function trueRound(value) {
 	// Original code from stackoverflow.com 
 	// Rounds a float to specified number of decimal places
 
-	var digits = parseInt(widget.preferences.roundoff);
-	
-	console.log("Digit: " + digits);
-    return (Math.round((value*Math.pow(10,digits)).toFixed(digits-1))/Math.pow(10,digits)).toFixed(digits);
+	var digits = parseInt((widget.preferences.roundoff), 10);
+    return (Math.round((value * Math.pow(10, digits)).toFixed(digits - 1)) / Math.pow(10, digits)).toFixed(digits);
 }
 
 function createDl(kids) {
@@ -44,7 +42,7 @@ function createDl(kids) {
 	// Once the definition list is created,
 	// the function only adds or deletes
 	// dt dd node pairs as necessary.
-	
+	//
 	// Opera recommends using createDocumentFragment()
 	// as it is faster to create the elements
 	// separately and then add to the page.
@@ -57,16 +55,13 @@ function createDl(kids) {
 		// if dl node exists
 		
 		temp = $("rateSlides").getElementsByTagName('dt');
-		console.log("bTempType: " + typeof(temp));
 		
-		if (temp.length == kids) {
-			console.log("Nodes: equal");
+		if (temp.length === kids) {
 			return;
 		} else if (temp.length < kids) {
 			// add more dt dd nodes
 			
 			var z = kids - temp.length;
-			console.log("Nodes: " + z + " added");
 			
 			for (var a = 0; a < z; a++) {
 				dt = E('dt');
@@ -94,7 +89,7 @@ function createDl(kids) {
 			var x = temp.length - kids;
 			console.log("Nodes: " + x + " deleted");
 			
-			while (x != 0) {
+			while (x !== 0) {
 				$("rateSlides").removeChild(temp[0]);
 				$("rateSlides").removeChild(temp1[0]);
 				x -= 1;
@@ -147,7 +142,7 @@ function update(input) {
 	var resources;
 	var fields;
 	
-	var parsedList = new Object;
+	var parsedList = {};
 	var out = [];		
 	
 	if (input) {
@@ -196,7 +191,7 @@ function update(input) {
 				
 				if (parsedList[second][1] < 0) { state = "stronger"; } 
 				if (parsedList[second][1] > 0) { state = "weaker"; }
-				if (parsedList[second][1] == 0) { state = "same"; }
+				if (parsedList[second][1] === 0) { state = "same"; }
 				
 				out[i] = [first, parsedList[second][0], second, state];
 
@@ -206,7 +201,7 @@ function update(input) {
 				
 				if (parsedList[first][1] > 0) { state = "stronger"; } 
 				if (parsedList[first][1] < 0) { state = "weaker"; }
-				if (parsedList[first][1] == 0) { state = "same"; }
+				if (parsedList[first][1] === 0) { state = "same"; }
 				
 				out[i] = [first, 1/parsedList[first][0], second, state];
 			} 
@@ -266,7 +261,7 @@ function getData() {
 				refDial('hang');
 			}
 		}
-	}
+	};
 
 	ext.send();	
 	
@@ -325,7 +320,7 @@ function refDial(cmd, out) {
 		
 		// start displaying the data
 		startSlide(out.length);
-		return
+		return;
 	}
 	
 	if (cmd == "wait") {
@@ -338,7 +333,7 @@ function refDial(cmd, out) {
 		hide("data");
 		show("wait");
 		
-		return
+		return;
 	}
 	
 	if (cmd == "hang") {
@@ -351,7 +346,7 @@ function refDial(cmd, out) {
 		hide("data");
 		show("wait");		
 		
-		return
+		return;
 	} 
 }
 
@@ -491,7 +486,7 @@ function init() {
 	// The 'interval' key in the preferences 
 	// specifies the delay between updates.
 	// Unit: minute
-	timeIt = setInterval(getData, parseInt(widget.preferences.interval) * 60 * 1000);
+	timeIt = setInterval(getData, parseInt((widget.preferences.interval), 10) * 60 * 1000);
 	
 	getData();
 }
