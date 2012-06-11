@@ -1,18 +1,20 @@
 ﻿var timeIt = null; // data refresh timer
-var delay;  // retry data access timer
 var slider; // slide time delay
 
 function $(v) {
+	//DOM: identifies element
 	if (document.getElementById(v)) {
 		return document.getElementById(v);
 	}
 }
 
 function E(v) {
+	//DOM: creates new element
 	return document.createElement(v);
 }
 
 function Txt(v) {
+	//DOM: creates text nodes
 	return document.createTextNode(v);
 }
 
@@ -25,18 +27,35 @@ function show(id) {
 }
 
 function trueRound(value){
+	// Original code from stackoverflow.com 
+	// Rounds a float to specified number of decimal places
+
 	var digits = parseInt(widget.preferences.roundoff);
+	
 	console.log("Digit: " + digits);
     return (Math.round((value*Math.pow(10,digits)).toFixed(digits-1))/Math.pow(10,digits)).toFixed(digits);
 }
 
 function createDl(kids) {
+	// Creates the definition list used to
+	// display the data in the speed dial.
+	// The 'kids' parameter specifies how
+	// many nodes (dt dd pair) to create.
+	// Once the definition list is created,
+	// the function only adds or deletes
+	// dt dd node pairs as necessary.
+	
+	// Opera recommends using createDocumentFragment()
+	// as it is faster to create the elements
+	// separately and then add to the page.
+	
 	var dl, dt, dd, txt, temp, temp1;
 	var inHtml = document.createDocumentFragment();
 	var list = $("rateSlides");
 	
 	if ($("rateSlides")) {
 		// if dl node exists
+		
 		temp = $("rateSlides").getElementsByTagName('dt');
 		console.log("bTempType: " + typeof(temp));
 		
@@ -85,7 +104,7 @@ function createDl(kids) {
 		}
 	} 
 	
-	// create and add to the DOM
+	// create the list and add to the DOM
 		
 	dl = E('dl');
 	dl.setAttribute('id', 'rateSlides');
@@ -111,6 +130,10 @@ function createDl(kids) {
 }
 
 function update(input) {
+	// Process the feed data here 
+	// and extract the currency pair
+	// needed. Prepare it for output.
+	
 	var temp1;
 	var temp2;
 	var temp3;
@@ -128,56 +151,48 @@ function update(input) {
 	var out = [];		
 	
 	if (input) {
-		//console.log("List: " + input);
-		// parse data
+		// process feed data
 	
 		// get count of currencies in data
-		listCount = input.list.meta.count; 
+		listCount = input.list.meta.count;
+				
+		// 1. Extract necessary fields - 
+		//    symbol, price & change
 		resources = input.list.resources;
-		
-		//console.log("Count: " + listCount);
-		
-		// 1. Extract necessary fields - symbol, price & change
 		for (var r = 0; r < listCount; r++) {
 			fields = resources[r].resource.fields;
 			
 			temp3 = fields.symbol.trim();
-			temp3 = temp3.substr(0, 3);
 			
-			temp1 = parseFloat(fields.price);
-			temp2 = parseFloat(fields.change);
+			temp3 = temp3.substr(0, 3); // currency symbol
+			temp1 = parseFloat(fields.price);  
+			temp2 = parseFloat(fields.change); 
 			
-			parsedList[temp3] = [temp1, temp2];
+			parsedList[temp3] = [temp1, temp2]; 
 		}
-		
-		//console.log("Parsed: " + parsedList);
 		
 		// 2. Get the user specified currency pairs
 		pairs = widget.preferences.pairs;
 		pairs = JSON.parse(pairs);
 		
-		console.log("bPairs: " + pairs);
-		console.log("bType: " + typeof(pairs));
-		
+		// find the currency data needed from
+		// the parsed feed list
 		for (var i = 0; i < pairs.length; i++) {
 			
 			temp1 = pairs[i];
-			console.log("bPairs[i]: " + pairs[i]);
 			temp1 = temp1.split('/');
-			console.log("bSplit: " + pairs[i] + "=" + temp1);
 			
-			first = temp1[0];
+			first = temp1[0];  
 			second = temp1[1];
-			
-			console.log("bPair val: " + first + ' / ' + second);
 			
 			temp1 = first + " / " + second;
 			
-			//console.log("Currency: " + temp1 + '-' + i + first + second);
-			//console.log("Parse: " + parsedList[second][1])
-			
 			// USD is the base currency
-			if (first === "USD") { // Scenario 1: USD / x
+			// So all currency data is for 
+			// 1 USD = x currency
+			if (first == "USD") { 
+				// Scenario 1: 1 USD = x [currency]
+				// E.g. USD / EUR
 				
 				if (parsedList[second][1] < 0) { state = "stronger"; } 
 				if (parsedList[second][1] > 0) { state = "weaker"; }
@@ -185,7 +200,9 @@ function update(input) {
 				
 				out[i] = [first, parsedList[second][0], second, state];
 
-			} else { // Scenario 2: x / USD
+			} else { 
+				// Scenario 2: 1 [currency] = x USD
+				// E.g. EUR / USD
 				
 				if (parsedList[first][1] > 0) { state = "stronger"; } 
 				if (parsedList[first][1] < 0) { state = "weaker"; }
@@ -194,17 +211,17 @@ function update(input) {
 				out[i] = [first, 1/parsedList[first][0], second, state];
 			} 
 			
-			// Scenario 3: x / x (cross rate)
 			if ((first != "USD") && (second != "USD")) {
-				// price calculation with USD as base
+				// Scenario 3: 1 [currency] = x [currency] 
+				// (cross rate pairs)
+				// E.g. AED / INR
 				
 				// Current value
 				temp2 = parsedList[second][0]/parsedList[first][0];
 				
-				// Previous value
+				// Previous value  - Determine 
+				// based on the 'change'
 				temp3 = (parsedList[second][0] + (parsedList[second][1])) / (parsedList[first][0] + (parsedList[first][1]));
-
-				//console.log("Change: " + temp2 + ',' + temp3);
 				
 				// if the current value is more,
 				// it indicates that the first currency
@@ -217,16 +234,18 @@ function update(input) {
 			}
 		}
 		
-		//console.log("Output: " + out);
+		// send the extracted data for o/p
 		refDial("show", out);
 		
-	} else {
+	} else { 
 		refDial("hang");
 	}
 }
 
-// get json feed from Yahoo Finance
 function getData() {
+	// Gets the currency rate data from 
+	// Yahoo finance - returns a JSON feed.
+	
 	var data;
 	var url = "http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote;currency=true?view=basic&format=json";
 	
@@ -241,6 +260,9 @@ function getData() {
 				data = JSON.parse(this.responseText);
 				update(data);
 			} else {
+				// possible network error -
+				// tell the user.
+				
 				refDial('hang');
 			}
 		}
@@ -254,68 +276,61 @@ function getData() {
 	return data;
 }
 
-// display in speed dial
 function refDial(cmd, out) {
+	// Used to show the output
+	// in the speed dial. 
 	
-	// display exchange rate data
-	if (cmd === "show") {
-		//console.log("Cmd show");
-		var cls, dt, dd;
+	if (cmd == "show") {
+		// prepare the currency data
+		// for display
+		
+		var dt, dd;
 		
 		clearInterval(slider);	
 		
+		// create the definition list
+		// structure used to show the data.
 		createDl(out.length);
-		console.log("Out: " + out.length);
 		
 		dt = $("rateSlides").getElementsByTagName('dt');
 		dd = $("rateSlides").getElementsByTagName('dd');
 		
-		console.log("Dt/Dd: " + dt.length + ', ' + dd.length);
-		
 		for (var o = 0; o < out.length; o++) {
-
-			console.log("Dt[o]: " + dt[o]);
-			console.log("Out[o]: " + out[o]);
+			// add data
 			
 			if (dt[o]) {
-				// remove old css class
+				// reset css class
 				dt[o].className = "";
-				// assign new data
+				// assign the new data
 				dt[o].innerHTML = '<span>1</span> ' + out[o][0];
-			} else {
-				console.log("Not Assigned to Dt!");
-			}
+			} 
 			
 			if (dd[o]) {
-				// remove old css class
+				// reset css class
 				dd[o].className = "";	
-				// assign new data				
+				// assign the new data				
 				dd[o].innerHTML = '<span class="' + out[o][3] + '">' + trueRound(out[o][1]) + '</span> ' + out[o][2];
-			} else {
-				console.log("Not Assigned to Dd!");
 			}			
 		}
 		
 		dt[0].className = 'current';
 		dd[0].className = 'current';
 		
-		//output.innerHTML = html;
 		hide("wait");
 		show("data");
 		
+		// each data is displayed
+		// for 5 seconds
 		slider = setInterval(startSlide, 5000);
+		
+		// start displaying the data
 		startSlide(out.length);
 		return
 	}
 	
-	// indicate data refresh
-	if (cmd === "wait") {
-
-		//console.log("Cmd wait");
-		
-		//html = '<div><img src="pix/loading.gif" alt="Loading ...">';
-		//html = html + '<p>updating</p>';
-		//output.innerHTML = html;
+	if (cmd == "wait") {
+		// used to indicate that an
+		// update of data is underway
 		
 		$("msg").firstChild.nodeValue = "updating";
 
@@ -326,12 +341,9 @@ function refDial(cmd, out) {
 		return
 	}
 	
-	// indicate network error
-	if (cmd === "hang") {
-		//html = '<div><img src="pix/loading.gif" alt="Loading ...">';
-		//html = html + '<p>hung</p>';
-		//output.innerHTML = html;
-		//console.log("Cmd hang");
+	if (cmd == "hang") {
+		// indicate some error
+		// has occured
 		
 		$("msg").firstChild.nodeValue = "Possible network error. Will retry after some time.";
 		
@@ -344,6 +356,12 @@ function refDial(cmd, out) {
 }
 
 function startSlide(count) {
+	// Displays the data.
+	// Cycles through each dt dd pair
+	// and marks it with css class name 
+	// 'current' to display it while
+	// the other pairs remain hidden.
+	
 	var cls;
 	var dt;
 	var dd;
@@ -359,21 +377,32 @@ function startSlide(count) {
 	dd = $("rateSlides").getElementsByTagName('dd');
 
 	for (var e=0; e < dt.length; e++) {
+		// Copy the DOM dt element and
+		// make changes to that.
 		tempDt[tempDt.length] = dt[e];
 	}
 	
 	for (var i = 0; i < tempDt.length; i++) {
-		if (done) { continue; }
+		if (done) { 
+			// Once a dt element has been marked
+			// 'current', no need to go through
+			// the rest of it as we display only
+			// one dt element at a time.
+			
+			continue; 
+		}
 		
 		cls = tempDt[i].className;
-		//console.log("ClassDt: " + i + cls);
 		
 		if ((cls.indexOf("current")) != -1) {
-			//console.log("true");
 			
+			// unmark the currently displayed dt
 			tempDt[i].className = "";
 			
 			if (i == (tempDt.length-1)) {
+				// if we have reached the last 
+				// dt, mark the first dt again.
+			
 				tempDt[0].className = 'current';
 			} else {
 				tempDt[i+1].className = 'current';
@@ -386,6 +415,10 @@ function startSlide(count) {
 	tempDt = null;
 	done = false;
 
+	// do the same thing for dd element
+	// as we did for the dt element in
+	// the code above.
+	
 	for (var s=0; s < dd.length; s++) {
 		tempDd[tempDd.length] = dd[s];
 	}
@@ -394,20 +427,17 @@ function startSlide(count) {
 		if (done) { continue; }
 		
 		cls = tempDd[t].className;
-		//console.log("ClassDd: " + t + cls);
 		
 		if ((cls.indexOf("current")) != -1) {
-			//console.log("true");
 			
 			tempDd[t].className = "";
-			//console.log("Replaced: " + tempDd[t].className);
+
 			if (t === (tempDd.length-1)) {
 				tempDd[0].className = 'current';
-				//console.log("New: " + tempDd[0].className);
 			} else {
 				tempDd[t+1].className = 'current';
-				//console.log("New: " + tempDd[t+1].className);
 			}
+			
 			done = true;
 		}
 	}
@@ -416,6 +446,13 @@ function startSlide(count) {
 }
 
 function reconfigure(e) {
+	// This code didn't work as expected.
+	// Needs more testing to figure out if
+	// it was some opera bug. It's here as 
+	// as a stub for future versions.
+	// It is meant to update the speed dial
+	// with the new options set by the user.
+
 	if (e.storageArea != widget.preferences) return;
 	switch(e.key) {
 		case 'interval': setRefreshTimer(); break;
@@ -424,22 +461,40 @@ function reconfigure(e) {
 
 function setRefreshTimer() {
 	clearInterval(slider);
-	slider = setInterval(startSlide, 5000);
+	slider = setInterval(startSlide, 4000);
 }
 
 function init() {
-	console.log("Initialized");
-	console.log("Pair: " + widget.preferences.pairs);
-	
+	// some basic settings intialised here
+	// to get the extension running
+		
 	if (!widget.preferences.pairs) {
+		// Set default currency pair for new
+		// installation. The 'pairs' key stores
+		// the currency pairs as an array in JSON.
+		//
+		// WARNING: Possible opera bug. When a 
+		// javascript occurs in the extension, opera
+		// messes up the JSON in 'pairs' key and this
+		// extension becomes unstable / unusable.
+		// Recommended solution is to re-install the
+		// extension again.
+		
 		var c = ["USD/EUR"];
 		widget.preferences.pairs = JSON.stringify(c);
 	}
 	
+	// monitors if options are updated and 
+	// saved in widget preferences.
 	window.addEventListener('storage', reconfigure, false);
+	
+	// The 'interval' key in the preferences 
+	// specifies the delay between updates.
+	// Unit: minute
 	timeIt = setInterval(getData, parseInt(widget.preferences.interval) * 60 * 1000);
 	
 	getData();
 }
 
+// monitor and inform when index.html is ready
 document.addEventListener('DOMContentLoaded', init, false);
