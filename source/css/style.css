@@ -1,0 +1,115 @@
+/* RESET */
+* {
+    margin:0;
+    padding:0;
+}
+
+/* TYPOGRAPHY */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:0.8em;
+    line-height:1.5;
+}
+
+/* DESIGN */
+html {
+    height:100%;
+}
+body {
+    background:#fff;
+    color:#898989;
+    display:table;
+    height:100%;
+    width:100%;
+}
+span {
+	color: #000;
+	text-shadow: 0px 1px 1px #5D5D5D;
+}
+#output {
+	display:table-cell;
+    text-align:center;
+    vertical-align:middle;
+}
+#output img {
+	text-align:center;
+	vertical-align:middle;
+}
+#msg {
+	font-size:60%;
+	color:#000;
+}
+dt {
+    font-weight:bold;
+}
+
+dd {
+    font-weight:bold;
+}
+
+/* SLIDESHOW */
+#data {
+	display:none;
+}
+
+#rateSlides {
+	display:block;
+}
+
+#rateSlides dt { 
+	display:none;
+}
+
+#rateSlides dd {
+	display:none;
+}
+
+#rateSlides dt.current { 
+	display:block;
+}
+
+#rateSlides dd.current { 
+	display:block;
+}
+
+#rateSlides dd span.stronger {	
+	color:green;
+}
+
+#rateSlides dd span.weaker {	
+	color:red;
+}
+
+/* Styles here are only applied in a "minimized" state */
+@media screen and (view-mode: minimized) {
+  output {
+    font-size: 1.8em;
+  }
+}
+
+/* Change the font size based on the available width */
+@media (min-width:6em) {
+    body {
+        font-size:1em;
+    }
+}
+@media (min-width:7.2em) {
+    body {
+        font-size:1.2em;
+    }
+}
+@media (min-width:9em) {
+    body {
+        font-size:1.5em;
+    }
+}
+@media (min-width:12em) {
+    body {
+        font-size:2em;
+    }
+}
+@media (min-width:18em) {
+    body {
+        font-size:3em;
+    }
+}
