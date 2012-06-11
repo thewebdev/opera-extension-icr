@@ -319,7 +319,7 @@ function removePair() {
 	} else {
 		/* mark for deletion */
 		stack[id] = 'remove';
-		console.log("marked for deletion");
+		console.log(id + " marked for deletion");
 	}
 	
 	count = count - 1;
@@ -368,7 +368,7 @@ function addPair() {
 		   The stack holds the pairs that 
 		   the user wants to add or remove. */
 		   
-		if (stack['id'] == 'add') {
+		if (stack[id] == 'add') {
 			status('Error: Duplicate pair not added - ' + id);
 			return;
 		}
@@ -380,7 +380,8 @@ function addPair() {
 		   the pair is not marked for
 		   removal. */
 		   
-		if (!(stack['id'] == 'remove')) {
+		if (!(stack[id] == 'remove')) {
+			console.log(stack[id]);
 			status('Error: Duplicate pair not added - ' + id);
 			return;
 		}
