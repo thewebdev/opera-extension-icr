@@ -183,19 +183,29 @@ function Txt(v) {
 }	
 
 function status(msg) {
+	/* Used to display messages
+	   to the user */
+	   
 	var hangTimer;
 	
 	$("msg").firstChild.nodeValue = msg;
 	show("msg");
 	
-	// show status update for 5 seconds
+	/* show status update for 7 seconds */
 	clearTimeout(hangTimer);
 	hangTimer = setTimeout(function() {
 		hide("msg");
-	}, 10000);	
+	}, 7000);	
 }
 
 function unlock() {
+	/* Enable save button as user
+	   may have made changes to 
+	   interval value, but not if
+	   there is no currency pairs
+	   to be saved (indicated by 
+	   count). */
+	   
 	if (count === 0) {
 		$('apply').disabled = true;
 	} else {
@@ -204,6 +214,10 @@ function unlock() {
 }
 
 function apply() {
+	/* Saves the changes to 
+	   widget preferences; does
+	   some validation too. */
+	   
 	var cmd, i, temp;
 	var ul, li;
 	var save = false;
@@ -212,7 +226,7 @@ function apply() {
 	i = parseInt(i, 10);		
 
 	if (!i) { 
-		// Validation - interval should be a number
+		/* Validation - interval should be a number */
 		status("Error: Update interval should be a number");
 		return;
 	} else {
@@ -220,25 +234,22 @@ function apply() {
 	}
 	
 	if (i < 15) {
-		// Validation - interval cannot be less than 15
+		/* Validation - interval cannot be less than 15 */
 		status("Error: Update interval should be more than 15 minutes.");
 		return;			
 	}
-	
-	console.log("Stack: " + JSON.stringify(stack));
-	console.log("Pairs: " + pairs);
 	
 	for (var id in stack) {
 	
 		temp = pairs.indexOf(id);
 		
+		/* Validation: check if pair is already
+           stored in preferences */
+		   
 		if (stack[id] == 'add'){
 			if (temp != -1) {
-				// Validation - check for duplicate
-				status('Error: Duplicate pair detected - ' + id);
-				return;
-			} else {
-				console.log("oTypeA: " + typeof(pairs));			
+				stack[id] = 'nochange';
+			} else {		
 				pairs[pairs.length] = id;
 				save = true;
 			}				
@@ -246,37 +257,31 @@ function apply() {
 		
 		if (stack[id] == 'remove') {
 			if (temp != -1) {
-				console.log("oTypeR: " + typeof(pairs));
 				pairs.splice(temp, 1);				
 				save = true;
 			}	
 		}
 	}
 	
-	console.log("pType: " + typeof(pairs));
-	
-	// save changes
+	/* store the changes in currency pair */
 	if (save) {		
 		widget.preferences.pairs = JSON.stringify(pairs);
 	}
 
+	/* store the change in interval value */
 	if (i != interval) {
 		widget.preferences.interval = i;
-		console.log("Interval: " + i);		
 	}	
 	
-	stack = {}
-	
-	pairs = widget.preferences.pairs;
-	console.log("Stored: " + pairs);
+	stack = {};
 	
 	hide("set");
 
 	ul = $("set");
 	li = ul.getElementsByTagName("li");
 	
-	// remove class name to flag that
-	// pairs have been saved
+	/* remove class name to flag that
+	   pairs have been saved */
 	for (var e = 0; e < li.length; e++) {
 		li[e].className = "";
 	}
@@ -284,7 +289,7 @@ function apply() {
 	show("set");
 	
 	if (save) {
-		// reload dial with new settings
+		/* reload dial with new settings */
 		opera.extension.bgProcess.getData();		
 	}
 	
@@ -292,6 +297,11 @@ function apply() {
 }
 
 function removePair() {
+	/* Allows user to delete a currency
+	   pair from the preferences. Note:
+	   The currency pairs are not deleted from 
+	   the widget prerences immediately.*/
+	   
 	var id, li;
 	var temp;
 	
@@ -299,21 +309,23 @@ function removePair() {
 	
 	li = $(id);
 
-	// makes sure we don't delete a pair
-	// that is not saved in preferences			
+	/* makes sure we don't delete a pair
+	   that is not saved in preferences. */
 	
 	if (li.className == 'new') {
-		// delete from stack only
+		/* delete from stack only */
 		delete stack[id];
 		console.log("deleted from stack");
 	} else {
-		// mark for deletion
+		/* mark for deletion */
 		stack[id] = 'remove';
 		console.log("marked for deletion");
 	}
 	
 	count = count - 1;
-	
+
+	/* Validation: there should be atleast one
+   currency pair to save in preferences */
 	if (count == 0) {
 		$('apply').disabled = true;
 	} else {
@@ -324,11 +336,16 @@ function removePair() {
 }
 
 function addPair() {
+	/* Allows the user to add new 
+	   currency pairs and displays
+	   it in the list. Also does some 
+	   validations of user input. */
+	   
 	var temp, first, second;
 	var li, id, a, txt;
 	
 	if (count == max) {
-		// validation - 5+ pair not allowed
+		/* validation - 5+ pair not allowed */
 		status("Error: Maximum limit of " + max + " pairs reached.");
 		return;	
 	}
@@ -337,25 +354,36 @@ function addPair() {
 	second = document.input.second.value;
 	
 	if (first === second) {
-		// Validation - same currency selection
+		/* Validation - source / target currrency can't be same */
 		status("Error: Same currency selected.");
 		return;
 	}
 		
 	id = first + "/" + second;
 	
+	/* Validation - user shouldn't add a currency pair twice */
+	
 	if (stack[id]) {
-		// Validation - Display shouldn't show duplicates
-		if (!(stack['id'] == 'remove')) {
+		/* 1. Check the stack first -
+		   The stack holds the pairs that 
+		   the user wants to add or remove. */
+		   
+		if (stack['id'] == 'add') {
 			status('Error: Duplicate pair not added - ' + id);
 			return;
 		}
 	}
 	
 	if (pairs.indexOf(id) != -1) {
-		// Validation - Display shouldn't show duplicates
-		status('Error: Duplicate pair not added - ' + id);
-		return;
+	/*  2. Check the widget preferences
+           and also make sure that 
+		   the pair is not marked for
+		   removal. */
+		   
+		if (!(stack['id'] == 'remove')) {
+			status('Error: Duplicate pair not added - ' + id);
+			return;
+		}
 	}
 	
 	li = E("li");
@@ -377,9 +405,10 @@ function addPair() {
 	li.appendChild(a);
 	li.appendChild(txt);
 	
-	// if a pair saved in preferences
-	// was to be deleted, and that same pair
-	// has been added again undo the remove command		
+	/* if a pair saved in preferences
+	   was to be deleted, and that 
+	   same pair has been added again 
+	   undo the remove command. */
 	
 	if (stack[id]) {
 		delete stack[id];
@@ -390,12 +419,19 @@ function addPair() {
 	count += 1;
 		
 	$("set").appendChild(li);
+	
+	/* Enable the save button as
+	   user made changes. */
 	$('apply').disabled = false;
 	
 	return;
 }
 
-function load() {		
+function load() {
+	/* Loads the current preferences and
+	   displays it to the user for making
+	   changes. */ 
+	   
 	var temp, first, second;
 	
 	var ul, li, a, txt;
@@ -403,7 +439,17 @@ function load() {
 
 	hide("set");
 	
+	/* Creates a ul list to display 
+	   the currency pairs that is stored
+	   in the preferences. */
+	   
 	for (var i = 0; i < count; i++) {
+	/*  Each list element also has a delete
+	    link so that the user can delete a
+		currency pair. Note: Clicking delete
+		does not delete the currency pair 
+		from widget preferences immediately. */
+		
 		li = E("li");
 		
 		a = E("a");
@@ -435,7 +481,7 @@ function load() {
 	
 	$("set").appendChild(inHtml);
 	show("set");
-		
+	
 	document.input.interval.value = interval;
 }
 
@@ -446,9 +492,14 @@ function init() {
 	count = pairs.length;
 	interval = parseInt(interval, 10);
 	
+	/* disable save button on start */
 	$('apply').disabled = true;
+	
+	/* monitor for button clicks */
 	$('addpair').addEventListener('click', addPair, false); 
 	$('apply').addEventListener('click', apply, false);
+	
+	/* monitor textbox for changes */
 	$('interval').addEventListener('keypress', unlock ,false);
 	
 	load();
