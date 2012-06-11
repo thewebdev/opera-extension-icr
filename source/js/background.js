@@ -83,10 +83,8 @@ function createDl(kids) {
 			/*  delete some dt dd nodes */
 			
 			temp1 = $("rateSlides").getElementsByTagName('dd');
-			console.log("bTemp1Type: " + typeof(temp1));
 			
 			var x = temp.length - kids;
-			console.log("Nodes: " + x + " deleted");
 			
 			while (x !== 0) {
 				$("rateSlides").removeChild(temp[0]);

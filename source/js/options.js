@@ -315,11 +315,9 @@ function removePair() {
 	if (li.className == 'new') {
 		/* delete from stack only */
 		delete stack[id];
-		console.log("deleted from stack");
 	} else {
 		/* mark for deletion */
 		stack[id] = 'remove';
-		console.log(id + " marked for deletion");
 	}
 	
 	count = count - 1;
@@ -381,7 +379,6 @@ function addPair() {
 		   removal. */
 		   
 		if (!(stack[id] == 'remove')) {
-			console.log(stack[id]);
 			status('Error: Duplicate pair not added - ' + id);
 			return;
 		}
