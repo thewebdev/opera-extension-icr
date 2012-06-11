@@ -196,7 +196,7 @@ function status(msg) {
 }
 
 function unlock() {
-	if (count == 0) {
+	if (count === 0) {
 		$('apply').disabled = true;
 	} else {
 		$('apply').disabled = false;
@@ -209,7 +209,7 @@ function apply() {
 	var save = false;
 	
 	i = document.input.interval.value;
-	i = parseInt(i);		
+	i = parseInt(i, 10);		
 
 	if (!i) { 
 		// Validation - interval should be a number
@@ -440,9 +440,11 @@ function load() {
 }
 
 function init() {
+	/* some basic settings intialised here */
+	
 	pairs = JSON.parse(pairs);
 	count = pairs.length;
-	interval = parseInt(interval);
+	interval = parseInt(interval, 10);
 	
 	$('apply').disabled = true;
 	$('addpair').addEventListener('click', addPair, false); 
@@ -452,4 +454,5 @@ function init() {
 	load();
 }
 
+/*  monitor and inform when HTML file is ready */
 document.addEventListener('DOMContentLoaded', init, false);

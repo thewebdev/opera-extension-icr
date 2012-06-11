@@ -487,5 +487,5 @@ function init() {
 	getData();
 }
 
-/*  monitor and inform when index.html is ready */
+/*  monitor and inform when HTML file is ready */
 document.addEventListener('DOMContentLoaded', init, false);
