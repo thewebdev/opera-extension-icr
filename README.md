@@ -1,6 +1,11 @@
 # Instant Currency Rates
 
-Instant Currency Rates (ICR) is an Opera extension that lets you view updates to the latest currency exchange rates directly in an Opera Speed Dial.
+Instant Currency Rates (ICR) is an Opera extension that lets you view the latest currency exchange rates directly in an Opera Speed Dial.
+
+	Download: https://addons.opera.com/en/extensions/details/instant-currency-rates/
+	Website: http://currencyrate.tumblr.com/
+	Source: https://github.com/thewebdev/opera-extension-icr.git
+	Email: thewebdev@myopera.com
 
 ## Features - Version 1
 
@@ -8,7 +13,7 @@ Instant Currency Rates (ICR) is an Opera extension that lets you view updates to
 ICR allows you to simulataneously view the exchange rates of up to 5 currency pair, in a single Speed Dial. 
 
 2. **Know the Currency State**  
-ICR visually indicates the strength or weakness of the currency, since its last update, by displaying it in green (stronger) or red (weaker) colour. 
+ICR visually indicates the strength or weakness of the currency, since the last update, by displaying it in green (stronger) or red (weaker) colour. 
 
 3. **Choose from 153 Currencies**  
 The ICR extension allows you to select currency pairs from 153 currencies currently in use in the world. 
