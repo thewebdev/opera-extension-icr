@@ -1,4 +1,27 @@
-﻿var timeIt = null; // data refresh timer
+﻿/*  This file is part of Instant Currency Rates. Instant Currency Rates
+	is an Opera extension that lets you view updates to the latest 
+	currency exchange rates in an Opera Speed Dial.
+	
+    Copyright (C) 2012 M Shabeer Ali
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	
+	Website: http://currencyrate.tumblr.com/
+	Source code: https://github.com/thewebdev/opera-extension-icr.git 
+	Email: thewebdev@myopera.com */
+
+var timeIt = null; // data refresh timer
 var slider; // slide time delay
 
 function $(v) {
@@ -463,9 +486,9 @@ function init() {
 		   pairs as an array in JSON in the
 		   format "USD/EUR".
 		   WARNING: Possible opera bug. When a 
-		   javascript occurs in the extension, opera
-		   messes up the JSON in 'pairs' key and this
-		   extension becomes unstable / unusable.
+		   javascript error occurs in the extension, 
+		   opera messes up the JSON in 'pairs' key and
+		   this extension becomes unstable / unusable.
 		   Recommended solution is to re-install the
 		   extension again. */
 		
