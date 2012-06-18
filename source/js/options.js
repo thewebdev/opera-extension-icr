@@ -203,7 +203,11 @@ function E(v) {
 
 function Txt(v) {
 	return document.createTextNode(v);
-}	
+}
+
+function submit() {
+	return false;
+}
 
 function status(msg) {
 	/* Used to display messages
@@ -522,6 +526,9 @@ function init() {
 	
 	/* monitor textbox for changes */
 	$('interval').addEventListener('keypress', unlock ,false);
+	
+	/* to catch form reload on ENTER key press */
+	$('input').addEventListener('submit', submit, false);	
 	
 	load();
 }
