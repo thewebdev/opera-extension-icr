@@ -330,9 +330,9 @@ function refDial(cmd, out) {
 		hide("wait");
 		show("data");
 		
-		/* each data is displayed
-		   for 5 seconds */
-		slider = setInterval(startSlide, 5000);
+		/* display each pair with 
+           specified delay */
+		slider = setInterval(startSlide, parseInt((widget.preferences.showfor), 10) * 1000);
 		
 		/*  start displaying the data */
 		startSlide(out.length);
@@ -467,12 +467,18 @@ function reconfigure(e) {
 	if (e.storageArea != widget.preferences) return;
 	switch(e.key) {
 		case 'interval': setRefreshTimer(); break;
+		case 'showfor': setDisplayTimer(); break;
 	}
 }
 
 function setRefreshTimer() {
+	clearInterval(timeit);
+	timeIt = setInterval(getData, parseInt((widget.preferences.interval), 10) * 60 * 1000);
+}
+
+function setDisplayTimer() {
 	clearInterval(slider);
-	slider = setInterval(startSlide, 4000);
+	slider = setInterval(startSlide, parseInt((widget.preferences.showfor), 10) * 1000);
 }
 
 function init() {
