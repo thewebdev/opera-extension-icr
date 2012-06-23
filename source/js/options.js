@@ -23,6 +23,7 @@
 	
 var pairs = widget.preferences.pairs;
 var interval = widget.preferences.interval;
+var showfor = widget.preferences.showfor;
 var max = widget.preferences.maxpairs;
 var stack = {};
 var count;
@@ -245,7 +246,7 @@ function apply() {
 	   widget preferences; does
 	   some validation too. */
 	   
-	var cmd, i, d, temp, showfor;
+	var cmd, i, d, temp;
 	var ul, li;
 	var save = false;
 	
@@ -311,13 +312,14 @@ function apply() {
 	if (save) {		
 		widget.preferences.pairs = JSON.stringify(pairs);
 	}
+	
+	interval = parseInt(interval, 10);
 
 	/* store the change in interval value */
 	if (i != interval) {
 		widget.preferences.interval = i;
 	}	
 	
-	showfor = widget.preferences.showfor;
 	showfor = parseInt(showfor, 10);
 
 	/* store the change in delay value */
@@ -345,6 +347,7 @@ function apply() {
 		opera.extension.bgProcess.getData();		
 	}
 	
+	$('apply').disabled = true;
 	return;
 }
 
@@ -533,6 +536,7 @@ function load() {
 	show("set");
 	
 	document.input.interval.value = interval;
+	document.input.delay.value = showfor;
 }
 
 function init() {
