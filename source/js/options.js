@@ -245,7 +245,7 @@ function apply() {
 	   widget preferences; does
 	   some validation too. */
 	   
-	var cmd, i, temp;
+	var cmd, i, d, temp, showfor;
 	var ul, li;
 	var save = false;
 	
@@ -265,6 +265,23 @@ function apply() {
 		status("Error: Update interval should be more than 15 minutes.");
 		return;			
 	}
+	
+	d = document.input.delay.value;
+	d = parseInt(d, 10);
+	
+	if ((!d) && (d != 0)) { 
+		/* Validation - delay should be a number */
+		status("Error: Display delay should be a number");
+		return;
+	} else {
+		document.input.delay.value = d;
+	}
+	
+	if (d <= 0) {
+		/* Validation - delay cannot be less than 1 */
+		status("Error: Display delay can't be less than 1 second.");
+		return;			
+	}	
 	
 	for (var id in stack) {
 	
@@ -299,6 +316,14 @@ function apply() {
 	if (i != interval) {
 		widget.preferences.interval = i;
 	}	
+	
+	showfor = widget.preferences.showfor;
+	showfor = parseInt(showfor, 10);
+
+	/* store the change in delay value */
+	if (d != showfor) {
+		widget.preferences.showfor = d;
+	}
 	
 	stack = {};
 	
@@ -524,8 +549,9 @@ function init() {
 	$('addpair').addEventListener('click', addPair, false); 
 	$('apply').addEventListener('click', apply, false);
 	
-	/* monitor textbox for changes */
+	/* monitor textbox for key strokes */
 	$('interval').addEventListener('keypress', unlock ,false);
+	$('delay').addEventListener('keypress', unlock ,false);
 	
 	/* to catch form reload on ENTER key press */
 	$('input').addEventListener('submit', submit, false);	
