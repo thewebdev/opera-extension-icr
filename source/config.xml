@@ -15,8 +15,8 @@
 		<param name="url" value="http://finance.yahoo.com/currency-investing"/>
 	</feature>
 	<preference name="interval" value="20"/>
+	<preference name="showfor" value="3"/>	
 	<preference name="maxpairs" value="5" readonly="true"/>
-	<preference name="showfor" value="3" readonly="true"/>
 	<preference name="roundoff" value="3" readonly="true"/>
 	<access origin="http://finance.yahoo.com/" subdomains="true"/>
 	<update-description href="https://extension-updates.opera.com/api/w3c-wd1/update/6015500d-0747-43cd-83a9-86d8da6a3f9c/"/>
