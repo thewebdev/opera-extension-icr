@@ -241,6 +241,20 @@ function unlock() {
 	}
 }
 
+function swap() {
+	var first, second;
+	
+	first = $('first').selectedIndex;
+	second = $('second').selectedIndex;
+	
+	if (first !== second) {
+		/* if the index are not same, swap the values */
+		$('first').selectedIndex = second;
+		$('second').selectedIndex = first;
+	}
+	return;
+}
+
 function apply() {
 	/* Saves the changes to 
 	   widget preferences; does
@@ -552,6 +566,7 @@ function init() {
 	/* monitor for button clicks */
 	$('addpair').addEventListener('click', addPair, false); 
 	$('apply').addEventListener('click', apply, false);
+	$('swap').addEventListener('click', swap, false);
 	
 	/* monitor textbox for key strokes */
 	$('interval').addEventListener('keypress', unlock ,false);

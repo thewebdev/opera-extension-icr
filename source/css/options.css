@@ -85,6 +85,12 @@ a:hover {
 #input select {
 	margin:2px 2px 4px 2px;
 } 
+#swap {
+	border: thin dotted #CCC;
+	border-radius: 3px;
+	color: #054C02;
+	cursor: pointer;	
+}
 .optval {
 	margin: 1px;
 	padding: 6px 5px;
