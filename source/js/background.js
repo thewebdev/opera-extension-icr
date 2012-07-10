@@ -23,6 +23,7 @@
 
 var timeIt = null; // data refresh timer
 var slider; // slide time delay
+var data;
 
 function $(v) {
 	/* DOM: identifies element */
@@ -261,7 +262,8 @@ function getData() {
 	/* Gets the currency rate data from 
 	   Yahoo finance as a JSON feed. */
 	
-	var data;
+	data = {};
+	
 	var url = "http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote;currency=true?view=basic&format=json";
 	
 	refDial('wait');
