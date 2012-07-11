@@ -95,16 +95,22 @@ a:hover {
 	padding: 5px;
 	text-align: center;
 }
-#web {
-	margin: 1px;
+#nav { 
+	margin: 2px;
+	padding: 2px;
 	text-align: center;
-
+	border-top: thin solid #CCC;
 }
-#web a:link, #web a:visited, #web a:active {
+#nav li {
+	display: inline;
+	list-style-type: none;
+	padding: 0 5px 0 0;
+}
+#nav a:link, #nav a:visited, #nav a:active {
+	font-weight: bold;
 	border: none;
 	background: #fff;
-	color: #585858;
 }
-#web a:hover {
-	font-weight: normal;
+#nav a:hover {
+	text-decoration:underline;
 }
