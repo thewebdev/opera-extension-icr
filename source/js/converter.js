@@ -210,6 +210,15 @@ function submit() {
 	return false;
 }
 
+function updTitle() {
+	var money, first, tit;
+	
+	money = document.input.money.value;
+	first = document.input.first.value;
+	
+	$('convert').firstChild.nodeValue = money + ' ' + currency[first] + ' = ';
+}
+
 function status(msg) {
 	/* Used to display messages
 	   to the user */
@@ -351,11 +360,10 @@ function apply() {
 	return;
 }
 
-function removePair() {
+function remove() {
 	/* Allows user to delete a currency
-	   pair from the preferences. Note:
-	   The currency pairs are not deleted from 
-	   the widget prerences immediately.*/
+	   Note: The currency is not deleted 
+	   from immediately. */
 	   
 	var id, li;
 	var temp;
@@ -365,7 +373,7 @@ function removePair() {
 	li = $(id);
 
 	/* makes sure we don't delete a pair
-	   that is not saved in preferences. */
+	   that is not saved in localStorage. */
 	
 	if (li.className == 'new') {
 		/* delete from stack only */
@@ -378,7 +386,7 @@ function removePair() {
 	count = count - 1;
 
 	/* Validation: there should be atleast one
-   currency pair to save in preferences */
+   currency pair to save in localStorage */
 	if (count == 0) {
 		$('apply').disabled = true;
 	} else {
@@ -388,23 +396,34 @@ function removePair() {
 	li.parentNode.removeChild(li);
 }
 
-function addPair() {
-	/* Allows the user to add new 
-	   currency pairs and displays
-	   it in the list. Also does some 
-	   validations of user input. */
+function add() {
+	/* Does the currency conversion 
+	   and displays it in the list. 
+	   Also does some validations 
+	   of user input. */
 	   
-	var temp, first, second;
+	var temp, amount, first, second;
 	var li, id, a, txt;
 	
-	if (count == max) {
-		/* validation - 5+ pair not allowed */
-		status("Error: Maximum limit of " + max + " pairs reached.");
-		return;	
-	}
-	
+	amount = document.input.money.value;
 	first = document.input.first.value;
 	second = document.input.second.value;
+	
+	amount = parseInt(amount, 10);
+	
+	if ((!amount) && (amount != 0)) { 
+		/* Validation - should be a number */
+		status("Error: Enter a number.");
+		return;
+	} else {
+		document.input.money.value = amount;
+	}
+	
+	if (amount <= 0) {
+		/* Validation - amount cannot be less than 1 */
+		status("Error: Enter a number greater than 0.");
+		return;			
+	}	
 	
 	if (first === second) {
 		/* Validation - source / target currrency can't be same */
@@ -412,29 +431,17 @@ function addPair() {
 		return;
 	}
 		
-	id = first + "/" + second;
+	id = second;
 	
 	/* Validation - user shouldn't add a currency pair twice */
 	
 	if (stack[id]) {
-		/* 1. Check the stack first -
-		   The stack holds the pairs that 
+		/* Check the stack first -
+		   The stack holds the currency that 
 		   the user wants to add or remove. */
 		   
 		if (stack[id] == 'add') {
-			status('Error: Duplicate pair not added - ' + id);
-			return;
-		}
-	}
-	
-	if (pairs.indexOf(id) != -1) {
-	/*  2. Check the widget preferences
-           and also make sure that 
-		   the pair is not marked for
-		   removal. */
-		   
-		if (!(stack[id] == 'remove')) {
-			status('Error: Duplicate pair not added - ' + id);
+			status('Error: ' + id + ' already added to list.');
 			return;
 		}
 	}
@@ -447,13 +454,12 @@ function addPair() {
 	a.setAttribute('href', '#self');
 	txt = Txt('delete');
 	a.appendChild(txt);
-	a.addEventListener('click', removePair, false);
-	
-	txt = first;
-	txt += " / " + second;
-	txt += " (" + currency[first];
-	txt	+= " / " + currency[second] + ")";
-	txt = Txt(txt);
+	a.addEventListener('click', remove, false);
+
+	temp = convert(amount, first, second);
+	temp = temp + ' ' + currency[second];
+				
+	txt = Txt(temp);
 	
 	li.appendChild(a);
 	li.appendChild(txt);
@@ -461,7 +467,7 @@ function addPair() {
 	/* if a pair saved in preferences
 	   was to be deleted, and that 
 	   same pair has been added again 
-	   undo the remove command. */
+	   undo the delete command. */
 	
 	if (stack[id]) {
 		delete stack[id];
@@ -469,6 +475,7 @@ function addPair() {
 		stack[id] = "add"
 	}
 	
+	stack[id] = ["add", currency[second]];
 	count += 1;
 		
 	$("set").appendChild(li);
@@ -480,78 +487,105 @@ function addPair() {
 	return;
 }
 
+function convert(amount, first, second) {
+	var rates, value;
+	
+	rates = opera.extension.bgProcess.getRates();
+	
+	if (first == "USD") {
+		value =  amount * rates[second][0];
+	} else {
+		value =  amount * (1/rates[first][0]);
+	}
+	
+	if ((first != "USD") && (second != "USD")) {
+		value =  amount * (rates[second][0]/rates[first][0]);
+	}
+	
+	value = opera.extension.bgProcess.trueRound(value);
+	return value;
+}
+
 function load() {
 	/* Loads the current preferences and
 	   displays it to the user for making
 	   changes. */ 
 	   
-	var temp, first, second;
-	
+	var temp, first, second, amount;
+	var key, val;
 	var ul, li, a, txt;
 	var inHtml = document.createDocumentFragment();
 
+	updTitle();
+	
 	hide("set");
 	
-	/* Creates a ul list to display 
-	   the currency pairs that is stored
-	   in the preferences. */
-	   
-	for (var i = 0; i < count; i++) {
-	/*  Each list element also has a delete
-	    link so that the user can delete a
-		currency pair. Note: Clicking delete
-		does not delete the currency pair 
-		from widget preferences immediately. */
-		
-		li = E("li");
-		
-		a = E("a");
-		a.setAttribute('href', '#self' + i);
-		txt = Txt('delete');
-		a.appendChild(txt);
-		a.addEventListener('click', removePair, false);
-		
-		temp = pairs[i];
-		temp = temp.split('/');
-		
-		first = temp[0];
-		second = temp[1];
-		
-		li.setAttribute('id', first + "/" + second);
-		
-		txt = first;
-		txt += " / " + second;
-		txt += " (" + currency[first];
-		txt	+= " / " + currency[second] + ")";
-			
-		txt = Txt(txt);
-		
-		li.appendChild(a);
-		li.appendChild(txt);
-		
-		inHtml.appendChild(li);
+	if (widget.preferences.first) {
+		first = widget.preferences.first;
+	} else {
+		first = document.input.first.value;
 	}
 	
+	amount = document.input.money.value;	
+	
+	/* Creates a ul list to display 
+	   the saved currencies */
+	
+	if (localStorage) {
+		if (localStorage.length) {   
+			for (var i = 0; i < count; i++) {
+			/*  Each list element also has a delete
+				link so that the user can delete a
+				currency. Note: Clicking delete
+				does not delete it immediately. */
+				
+				key = localStorage.key(i);
+				val = String(localStorage.getItem(key));
+				
+				li = E("li");
+				li.setAttribute('id', key);
+				
+				a = E("a");
+				a.setAttribute('href', '#self' + i);
+				txt = Txt('delete');
+				a.appendChild(txt);
+				a.addEventListener('click', remove, false);
+				
+				temp = convert(amount, first, key);
+				temp = temp + ' ' + val;
+				
+				txt = Txt(temp);				
+				li.appendChild(a);
+				li.appendChild(txt);
+				
+				inHtml.appendChild(li);
+			}
+		}
+	}
+
 	$("set").appendChild(inHtml);
 	show("set");
-	
-	document.input.interval.value = interval;
-	document.input.delay.value = showfor;
 }
 
 function init() {
 	/* some basic settings intialised here */
 	
-	pairs = JSON.parse(pairs);
-	count = pairs.length;
-	interval = parseInt(interval, 10);
+	if (localStorage) {
+		if (localStorage.length) {
+			count = localStorage.length;
+		}
+	}
 	
 	/* disable save button on start */
 	$('apply').disabled = true;
 	
-	/* monitor for button clicks */
-	$('add').addEventListener('click', addPair, false); 
+	/* monitor button clicks */
+	$('first').addEventListener('change', updTitle, false);
+	$('add').addEventListener('click', add, false); 
 	$('apply').addEventListener('click', apply, false);
+	
+	/* monitor data entry */
+	$('money').addEventListener('keyup', updTitle, false);
 	
 	/* to catch form reload on ENTER key press */
 	$('input').addEventListener('submit', submit, false);	
