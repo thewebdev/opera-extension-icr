@@ -23,7 +23,7 @@
 
 var timeIt = null; // data refresh timer
 var slider; // slide time delay
-var rates;
+var rates = {};
 
 function $(v) {
 	/* DOM: identifies element */
