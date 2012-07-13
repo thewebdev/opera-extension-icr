@@ -48,7 +48,7 @@ ol {
 li {	
 	list-style-type: none;
 	margin: 3px;
-	color: #0055FF;
+	color: #10600D;
 	text-align:left;
 }
 a:link, a:visited, a:active {
@@ -85,6 +85,10 @@ a:hover {
 #input select {
 	margin:2px 2px 4px 2px;
 } 
+.noline {
+	margin: 1px;
+	padding: 6px 5px;
+}
 .optval {
 	margin: 1px;
 	padding: 6px 5px;
@@ -100,6 +104,7 @@ a:hover {
 	padding: 2px;
 	text-align: center;
 	border-top: thin solid #CCC;
+	border-bottom: thin solid #CCC;
 }
 #nav li {
 	display: inline;
@@ -107,6 +112,7 @@ a:hover {
 	padding: 0 5px 0 0;
 }
 #nav a:link, #nav a:visited, #nav a:active {
+	color: #0644D4;
 	font-weight: bold;
 	border: none;
 	background: #fff;
