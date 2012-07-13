@@ -553,10 +553,6 @@ function init() {
 	$('add').addEventListener('click', addPair, false); 
 	$('apply').addEventListener('click', apply, false);
 	
-	/* monitor textbox for key strokes */
-	$('interval').addEventListener('keypress', unlock ,false);
-	$('delay').addEventListener('keypress', unlock ,false);
-	
 	/* to catch form reload on ENTER key press */
 	$('input').addEventListener('submit', submit, false);	
 	
