@@ -272,20 +272,6 @@ function status(msg) {
 	}, 7000);	
 }
 
-function unlock() {
-	/* Enable save button as user
-	   may have made changes to 
-	   interval value, but not if
-	   there is no currency to be 
-	   saved (indicated by count). */
-	   
-	if (count === 0) {
-		$('apply').disabled = true;
-	} else {
-		$('apply').disabled = false;
-	}
-}
-
 function apply() {
 	/* Saves the changes; does
 	   some validation too. */
