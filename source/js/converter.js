@@ -21,10 +21,6 @@
 	Source code: https://github.com/thewebdev/opera-extension-icr.git 
 	Email: thewebdev@myopera.com */
 	
-var pairs = widget.preferences.pairs;
-var interval = widget.preferences.interval;
-var showfor = widget.preferences.showfor;
-var max = widget.preferences.maxpairs;
 var stack = {};
 var count;
 
@@ -286,110 +282,46 @@ function unlock() {
 }
 
 function apply() {
-	/* Saves the changes to 
-	   widget preferences; does
+	/* Saves the changes; does
 	   some validation too. */
 	   
-	var cmd, i, d, temp;
-	var ul, li;
-	var save = false;
-	
-	i = document.input.interval.value;
-	i = parseInt(i, 10);		
-
-	if (!i) { 
-		/* Validation - interval should be a number */
-		status("Error: Update interval should be a number");
-		return;
-	} else {
-		document.input.interval.value = i;
-	}
-	
-	if (i < 15) {
-		/* Validation - interval cannot be less than 15 */
-		status("Error: Update interval should be more than 15 minutes.");
-		return;			
-	}
-	
-	d = document.input.delay.value;
-	d = parseInt(d, 10);
-	
-	if ((!d) && (d != 0)) { 
-		/* Validation - delay should be a number */
-		status("Error: Display delay should be a number");
-		return;
-	} else {
-		document.input.delay.value = d;
-	}
-	
-	if (d <= 0) {
-		/* Validation - delay cannot be less than 1 */
-		status("Error: Display delay can't be less than 1 second.");
-		return;			
-	}	
+	var val, ul, li;
 	
 	for (var id in stack) {
-	
-		temp = pairs.indexOf(id);
-		
-		/* Validation: check if pair is already
-           stored in preferences */
-		   
-		if (stack[id] == 'add'){
-			if (temp != -1) {
-				stack[id] = 'nochange';
-			} else {		
-				pairs[pairs.length] = id;
-				save = true;
-			}				
+		if (stack[id][0] == 'add'){
+			val = stack[id][1];
+			if (localStorage) {
+				localStorage.setItem(id, val);
+			} else {
+				status("Error: Unable to save.");
+			}
 		}
 		
-		if (stack[id] == 'remove') {
-			if (temp != -1) {
-				pairs.splice(temp, 1);				
-				save = true;
-			}	
+		if (stack[id][0] == 'remove') {
+			if (localStorage.getItem(id)) {
+				localStorage.removeItem(id);
+			}
 		}
 	}
 	
-	/* store the changes in currency pair */
-	if (save) {		
-		widget.preferences.pairs = JSON.stringify(pairs);
-	}
-	
-	interval = parseInt(interval, 10);
-
-	/* store the change in interval value */
-	if (i != interval) {
-		widget.preferences.interval = i;
-	}	
-	
-	showfor = parseInt(showfor, 10);
-
-	/* store the change in delay value */
-	if (d != showfor) {
-		widget.preferences.showfor = d;
-	}
-	
+	/* reset stack */
 	stack = {};
 	
 	hide("set");
-
 	ul = $("set");
 	li = ul.getElementsByTagName("li");
 	
 	/* remove class name to flag that
-	   pairs have been saved */
+	   new notes have been saved */
+	   
 	for (var e = 0; e < li.length; e++) {
 		li[e].className = "";
 	}
 	
 	show("set");
 	
-	if (save) {
-		/* reload dial with new settings */
-		opera.extension.bgProcess.getData();		
-	}
+	first = document.input.first.value;
+	widget.preferences.first = first;
 	
 	$('apply').disabled = true;
 	return;
@@ -412,7 +344,7 @@ function remove(id) {
 	opera.postError('id: ' + id);
 	li = $(id);
 
-	/* makes sure we don't delete a pair
+	/* makes sure we don't delete currency
 	   that is not saved in localStorage. */
 	
 	if (li.className == 'new') {
@@ -420,7 +352,7 @@ function remove(id) {
 		delete stack[id];
 	} else {
 		/* mark for deletion */
-		stack[id] = 'remove';
+		stack[id] = ['remove'];
 	}
 	
 	count = count - 1;
@@ -480,7 +412,7 @@ function add() {
 		   The stack holds the currency that 
 		   the user wants to add or remove. */
 		   
-		if (stack[id] == 'add') {
+		if (stack[id][0] == 'add') {
 			status('Error: ' + id + ' already added to list.');
 			return;
 		}
@@ -503,18 +435,7 @@ function add() {
 	
 	li.appendChild(a);
 	li.appendChild(txt);
-	
-	/* if a pair saved in preferences
-	   was to be deleted, and that 
-	   same pair has been added again 
-	   undo the delete command. */
-	
-	if (stack[id]) {
-		delete stack[id];
-	} else {
-		stack[id] = "add"
-	}
-	
+		
 	stack[id] = ["add", currency[second]];
 	count += 1;
 		
