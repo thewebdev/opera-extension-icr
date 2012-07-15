@@ -211,7 +211,7 @@ function submit() {
 }
 
 function rateUpdate() {
-	var amount, first, li, id;
+	var amount, first, li, id, marked;
 	
 	opera.postError('updating rates');
 	
@@ -238,20 +238,20 @@ function rateUpdate() {
 	
 	/* get all list nodes */
 	li = $("set").getElementsByTagName('li');
+	
 	if (li) {
 		for (var i = 0; i < li.length; i++) {
 			id = li[i].getAttribute('id');
 			if (first == id) {
-				remove(id);
-				break;
+				marked = id;
+				continue;
 			}
 			temp = convert(amount, first, id);
 			temp = temp + ' ' + currency[id];
-			opera.postError('upd: ' + temp);
 			$(id).lastChild.nodeValue = temp;
 		}
+		if (marked) {remove(marked);}
 	}
-	
 }
 
 function status(msg) {
@@ -403,9 +403,9 @@ function remove(id) {
 	var li;
 	var temp;
 	
-	opera.postError('id: ' + id);
+	opera.postError('id: ' + id.type);
 	
-	if(!id) {
+	if(id.type) {
 		id = this.parentNode.id;
 	}
 
