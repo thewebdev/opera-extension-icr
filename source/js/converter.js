@@ -210,13 +210,48 @@ function submit() {
 	return false;
 }
 
-function updTitle() {
-	var money, first, tit;
+function rateUpdate() {
+	var amount, first, li, id;
 	
-	money = document.input.money.value;
+	opera.postError('updating rates');
+	
+	amount = document.input.money.value;
 	first = document.input.first.value;
 	
-	$('convert').firstChild.nodeValue = money + ' ' + currency[first] + ' = ';
+	$('convert').firstChild.nodeValue = amount + ' ' + currency[first] + ' = ';
+	
+	amount = parseInt(amount, 10);
+	
+	if ((!amount) && (amount != 0)) { 
+		/* Validation - should be a number */
+		status("Error: Enter a number as currency value.");
+		return;
+	} else {
+		document.input.money.value = amount;
+	}
+	
+	if (amount <= 0) {
+		/* Validation - amount cannot be less than 1 */
+		status("Error: Enter a number greater than 0.");
+		return;			
+	}
+	
+	/* get all list nodes */
+	li = $("set").getElementsByTagName('li');
+	if (li) {
+		for (var i = 0; i < li.length; i++) {
+			id = li[i].getAttribute('id');
+			if (first == id) {
+				remove(id);
+				break;
+			}
+			temp = convert(amount, first, id);
+			temp = temp + ' ' + currency[id];
+			opera.postError('upd: ' + temp);
+			$(id).lastChild.nodeValue = temp;
+		}
+	}
+	
 }
 
 function status(msg) {
@@ -360,16 +395,21 @@ function apply() {
 	return;
 }
 
-function remove() {
+function remove(id) {
 	/* Allows user to delete a currency
 	   Note: The currency is not deleted 
 	   from immediately. */
 	   
-	var id, li;
+	var li;
 	var temp;
 	
-	id = this.parentNode.id;
+	opera.postError('id: ' + id);
 	
+	if(!id) {
+		id = this.parentNode.id;
+	}
+
+	opera.postError('id: ' + id);
 	li = $(id);
 
 	/* makes sure we don't delete a pair
@@ -413,7 +453,7 @@ function add() {
 	
 	if ((!amount) && (amount != 0)) { 
 		/* Validation - should be a number */
-		status("Error: Enter a number.");
+		status("Error: Enter a number as currency value.");
 		return;
 	} else {
 		document.input.money.value = amount;
@@ -492,18 +532,22 @@ function convert(amount, first, second) {
 	
 	rates = opera.extension.bgProcess.getRates();
 	
-	if (first == "USD") {
-		value =  amount * rates[second][0];
+	if (rates) {
+		if (first == "USD") {
+			value =  amount * rates[second][0];
+		} else {
+			value =  amount * (1/rates[first][0]);
+		}
+		
+		if ((first != "USD") && (second != "USD")) {
+			value =  amount * (rates[second][0]/rates[first][0]);
+		}
+		
+		value = opera.extension.bgProcess.trueRound(value);
+		return value;
 	} else {
-		value =  amount * (1/rates[first][0]);
+		status("Error: Couldn't get latest currency rates update.");
 	}
-	
-	if ((first != "USD") && (second != "USD")) {
-		value =  amount * (rates[second][0]/rates[first][0]);
-	}
-	
-	value = opera.extension.bgProcess.trueRound(value);
-	return value;
 }
 
 function load() {
@@ -515,8 +559,6 @@ function load() {
 	var key, val;
 	var ul, li, a, txt;
 	var inHtml = document.createDocumentFragment();
-
-	updTitle();
 	
 	hide("set");
 	
@@ -526,7 +568,9 @@ function load() {
 		first = document.input.first.value;
 	}
 	
-	amount = document.input.money.value;	
+	amount = document.input.money.value;
+	
+	$('convert').firstChild.nodeValue = amount + ' ' + currency[first] + ' = ';
 	
 	/* Creates a ul list to display 
 	   the saved currencies */
@@ -580,12 +624,12 @@ function init() {
 	$('apply').disabled = true;
 	
 	/* monitor button clicks */
-	$('first').addEventListener('change', updTitle, false);
+	$('first').addEventListener('change', rateUpdate, false);
 	$('add').addEventListener('click', add, false); 
 	$('apply').addEventListener('click', apply, false);
 	
 	/* monitor data entry */
-	$('money').addEventListener('keyup', updTitle, false);
+	$('money').addEventListener('keyup', rateUpdate, false);
 	
 	/* to catch form reload on ENTER key press */
 	$('input').addEventListener('submit', submit, false);	
