@@ -217,7 +217,7 @@ function rateUpdate() {
 	
 	amount = parseInt(amount, 10);
 	
-	if ((!amount) && (amount != 0)) { 
+	if ((!amount) && (amount !== 0)) { 
 		/* Validation - should be a number */
 		status("Error: Enter a number as currency value.");
 		return;
@@ -330,7 +330,6 @@ function remove(id) {
 	   from localstorage immediately. */
 	   
 	var li;
-	var temp;
 	
 	/* when the user clicks 'delete'
 	   a click event will occur, else
@@ -363,7 +362,7 @@ function remove(id) {
 	/* Validation: there should be atleast one
    currency to save in localStorage */
    
-	if (count == 0) {
+	if (count === 0) {
 		$('apply').disabled = true;
 	} else {
 		$('apply').disabled = false;
@@ -387,7 +386,7 @@ function add() {
 	
 	amount = parseInt(amount, 10);
 	
-	if ((!amount) && (amount != 0)) { 
+	if ((!amount) && (amount !== 0)) { 
 		/* Validation - should be a number */
 		status("Error: Enter a number as currency value.");
 		return;
@@ -482,9 +481,9 @@ function load() {
 	   displays it to the user for making
 	   changes. */ 
 	   
-	var temp, first, second, amount;
+	var temp, first, amount;
 	var key, val;
-	var ul, li, a, txt;
+	var li, a, txt;
 	var inHtml = document.createDocumentFragment();
 	
 	hide("set");
