@@ -209,11 +209,10 @@ function submit() {
 function rateUpdate() {
 	var amount, first, li, id, marked;
 	
-	opera.postError('updating rates');
-	
 	amount = document.input.money.value;
 	first = document.input.first.value;
 	
+	/* update heading */	
 	$('convert').firstChild.nodeValue = amount + ' ' + currency[first] + ' = ';
 	
 	amount = parseInt(amount, 10);
@@ -236,9 +235,16 @@ function rateUpdate() {
 	li = $("set").getElementsByTagName('li');
 	
 	if (li) {
+		
+		/* get id of each node in the list
+		   and use that to update the node
+		   with new conversion values;
+		   remove any node where first and
+		   second currency are the same */
+		   
 		for (var i = 0; i < li.length; i++) {
 			id = li[i].getAttribute('id');
-			if (first == id) {
+			if (first == id) { 
 				marked = id;
 				continue;
 			}
@@ -270,9 +276,8 @@ function unlock() {
 	/* Enable save button as user
 	   may have made changes to 
 	   interval value, but not if
-	   there is no currency pairs
-	   to be saved (indicated by 
-	   count). */
+	   there is no currency to be 
+	   saved (indicated by count). */
 	   
 	if (count === 0) {
 		$('apply').disabled = true;
@@ -287,6 +292,7 @@ function apply() {
 	   
 	var val, ul, li;
 	
+	/* save / delete list nodes by id */
 	for (var id in stack) {
 		if (stack[id][0] == 'add'){
 			val = stack[id][1];
@@ -320,6 +326,11 @@ function apply() {
 	
 	show("set");
 	
+	/* save first currency in 
+	   widget preferences rather
+	   than localstorage as it 
+	   makes the code less complex */
+	   
 	first = document.input.first.value;
 	widget.preferences.first = first;
 	
@@ -330,18 +341,24 @@ function apply() {
 function remove(id) {
 	/* Allows user to delete a currency
 	   Note: The currency is not deleted 
-	   from immediately. */
+	   from localstorage immediately. */
 	   
 	var li;
 	var temp;
 	
-	opera.postError('id: ' + id.type);
-	
+	/* when the user clicks 'delete'
+	   a click event will occur, else
+	   id.type will be null indicating
+	   that id is not an event but
+	   a string. If id is a string
+	   we can use it as such to identify
+	   the node to delete, otherwise
+	   we use dom events to identify node. */
+	   
 	if(id.type) {
 		id = this.parentNode.id;
 	}
 
-	opera.postError('id: ' + id);
 	li = $(id);
 
 	/* makes sure we don't delete currency
@@ -358,7 +375,8 @@ function remove(id) {
 	count = count - 1;
 
 	/* Validation: there should be atleast one
-   currency pair to save in localStorage */
+   currency to save in localStorage */
+   
 	if (count == 0) {
 		$('apply').disabled = true;
 	} else {
@@ -405,13 +423,12 @@ function add() {
 		
 	id = second;
 	
-	/* Validation - user shouldn't add a currency pair twice */
+	/* Validation - user shouldn't add a currency twice */
 	
 	if (stack[id]) {
 		/* Check the stack first -
 		   The stack holds the currency that 
-		   the user wants to add or remove. */
-		   
+		   the user wants to add or remove. */ 
 		if (stack[id][0] == 'add') {
 			status('Error: ' + id + ' already added to list.');
 			return;
@@ -435,7 +452,8 @@ function add() {
 	
 	li.appendChild(a);
 	li.appendChild(txt);
-		
+	
+	/* mark it in stack */
 	stack[id] = ["add", currency[second]];
 	count += 1;
 		
@@ -449,6 +467,8 @@ function add() {
 }
 
 function convert(amount, first, second) {
+	/* code reuse - refer to background.js */
+	
 	var rates, value;
 	
 	rates = opera.extension.bgProcess.getRates();
