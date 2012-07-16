@@ -103,13 +103,11 @@ a:hover {
 	margin: 2px;
 	padding: 2px;
 	text-align: center;
-	border-top: thin solid #CCC;
-	border-bottom: thin solid #CCC;
 }
 #nav li {
 	display: inline;
 	list-style-type: none;
-	padding: 0 5px 0 0;
+	padding: 0 3px 0 0;
 }
 #nav a:link, #nav a:visited, #nav a:active {
 	color: #0644D4;

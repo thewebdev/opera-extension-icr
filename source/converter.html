@@ -34,13 +34,12 @@
 <body>
 <div id="options">
 	<h1>Instant Currency Rates Converter</h1>
-	<ul id="nav">
-		<li><a href="options.html">Preferences</a></li>
-		<li><a href="converter.html">Currency Converter</a></li>
-		<li><a href="http://currencyrate.tumblr.com/submit">Online Support</a></li>
-	</ul>
 	<form name="input" id="input" action="javascript:void(0);">
-		<div class="noline">
+		<div id="conversion" class="optval">
+			<h2 id="convert">&nbsp;</h2>
+			<ul id="set"></ul>
+		</div>		
+		<div class="optval">
 			<label for="money">Convert: </label>
 			<input type="text" name="money" id="money" size="3" value="1"/>
 			<select name="first" id="first">
@@ -357,14 +356,15 @@
 				<option value="ZWD">ZWD - Zimbabwe dollar</option>
 			</select>
 			<input type="button" id="add" value="Add" />
-		</div>
-		<div id="conversion" class="optval">
-			<h2 id="convert">&nbsp;</h2>
-			<ul id="set"></ul>
-		</div>		
+		</div>	
 		<div class="optval submit">
 			<input type="button" id="apply" value="Save" />
 		</div>
+		<ul id="nav">
+			<li><a href="options.html">Preferences</a></li>
+			<li><a href="converter.html">Currency Converter</a></li>
+			<li><a href="http://currencyrate.tumblr.com/submit">Online Support</a></li>
+		</ul>
 	</form>
 </div>
 <div id="msg">Loading</div>
