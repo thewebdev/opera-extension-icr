@@ -245,15 +245,27 @@ function rateUpdate() {
 		for (var i = 0; i < li.length; i++) {
 			id = li[i].getAttribute('id');
 			if (first == id) { 
-				marked = id;
+				temp = 1 + ' ' + currency[id];
+				$(id).lastChild.nodeValue = temp;
 				continue;
 			}
 			temp = convert(amount, first, id);
 			temp = temp + ' ' + currency[id];
 			$(id).lastChild.nodeValue = temp;
 		}
-		if (marked) {remove(marked);}
 	}
+	
+	/* Enable save button as user
+	   may have made changes to 
+	   first currency, but not if
+	   there is no currency to be 
+	   saved (indicated by count). */
+	   
+	if (count === 0) {
+		$('apply').disabled = true;
+	} else {
+		$('apply').disabled = false;
+	}	
 }
 
 function status(msg) {
