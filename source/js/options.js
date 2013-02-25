@@ -251,6 +251,9 @@ function swap() {
 		/* if the index are not same, swap the values */
 		$('first').selectedIndex = second;
 		$('second').selectedIndex = first;
+	} else {
+		/* alert the user */
+		status("Warning: Both currency are the same.")
 	}
 	return;
 }
