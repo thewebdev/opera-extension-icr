@@ -23,6 +23,7 @@
 
 var timeIt = null; // data refresh timer
 var slider; // slide time delay
+var rates = {};
 
 function $(v) {
 	/* DOM: identifies element */
@@ -55,6 +56,10 @@ function trueRound(value) {
 
 	var digits = parseInt((widget.preferences.roundoff), 10);
     return (Math.round((value * Math.pow(10, digits)).toFixed(digits - 1)) / Math.pow(10, digits)).toFixed(digits);
+}
+
+function getRates() {
+	return rates;
 }
 
 function createDl(kids) {
@@ -183,7 +188,8 @@ function update(input) {
 			temp1 = parseFloat(fields.price);  
 			temp2 = parseFloat(fields.change); 
 			
-			parsedList[temp3] = [temp1, temp2]; 
+			parsedList[temp3] = [temp1, temp2];
+			rates[temp3] = [temp1]
 		}
 		
 		/*  2. Get the user specified currency pairs */
@@ -262,6 +268,7 @@ function getData() {
 	   Yahoo finance as a JSON feed. */
 	
 	var data;
+	
 	var url = "http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote;currency=true?view=basic&format=json";
 	
 	refDial('wait');

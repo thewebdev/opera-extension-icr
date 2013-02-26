@@ -34,9 +34,10 @@
 <body>
 <div id="options">
 	<h1>Instant Currency Rates Preferences</h1>
-	<div class="optval"></div>
+	<div class="optval">
 		<h2>Selected Currency Pairs</h2>
 		<ul id="set"></ul>
+	</div>
 	<form name="input" id="input" action="javascript:void(0);">
 		<div class="optval">
 		<label for="first">Currency Pair - 1:</label>
@@ -358,10 +359,10 @@
 		<input type="button" id="addpair" value="Add Pair" />
 		</div>
 		<div class="optval">
-			&nbsp; &nbsp;
+			&nbsp;&nbsp;
 			<label for="interval">Update interval:</label>
 			<input type="text" name="interval" id="interval" size="2" />
-			<em> minutes &nbsp; &nbsp;</em>	
+			<em> minutes &nbsp; &nbsp; &nbsp; &nbsp;</em>	
 			<label for="delay">Display each pair for:</label>
 			<input type="text" name="delay" id="delay" size="2" /> 
 			<em>seconds</em>			
@@ -369,11 +370,13 @@
 		<div class="optval submit">
 			<input type="button" id="apply" value="Save All Changes" />
 		</div>
+		<ul id="nav">
+			<li><a href="options.html">Preferences</a></li>	
+			<li><a href="converter.html">Currency Converter</a></li>		
+			<li><a href="http://currencyrate.tumblr.com/submit">Online Support</a></li>
+		</ul>		
 	</form>
 </div>
 <div id="msg">Loading</div>
-<div id="web">
-	<a href="http://currencyrate.tumblr.com/ask">v1.4 Online Support</a>
-</div>
 </body>
 </html>

@@ -1,10 +1,10 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <widget 
 	xmlns="http://www.w3.org/ns/widgets" 
 	id="https://addons.opera.com/extensions/details/instant-currency-rates/" 
 	defaultlocale="en" 
 	viewmodes="minimized" 
-	version="1.4">
+	version="1.5">
 	
 	<name short="ExchangeRates">Instant Currency Rates</name>
 	<author email="thewebdev@myopera.com">M Shabeer Ali</author>

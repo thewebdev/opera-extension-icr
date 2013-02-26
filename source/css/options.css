@@ -48,7 +48,7 @@ ol {
 li {	
 	list-style-type: none;
 	margin: 3px;
-	color: #0055FF;
+	color: #10600D;
 	text-align:left;
 }
 a:link, a:visited, a:active {
@@ -88,6 +88,10 @@ a:hover {
 #swap {
 	cursor: pointer;	
 }
+.noline {
+	margin: 1px;
+	padding: 6px 5px;
+}
 .optval {
 	margin: 1px;
 	padding: 6px 5px;
@@ -98,16 +102,22 @@ a:hover {
 	padding: 5px;
 	text-align: center;
 }
-#web {
-	margin: 1px;
+#nav { 
+	margin: 2px;
+	padding: 2px;
 	text-align: center;
-
 }
-#web a:link, #web a:visited, #web a:active {
+#nav li {
+	display: inline;
+	list-style-type: none;
+	padding: 0 3px 0 0;
+}
+#nav a:link, #nav a:visited, #nav a:active {
+	color: #0644D4;
+	font-weight: bold;
 	border: none;
 	background: #fff;
-	color: #585858;
 }
-#web a:hover {
-	font-weight: normal;
+#nav a:hover {
+	text-decoration:underline;
 }
