@@ -13,9 +13,9 @@ Instant Currency Rates (ICR) is an Opera extension that lets you view the latest
 ICR allows you to simultaneously view the exchange rates of up to 5 currency pair, in a single Speed Dial. 
 
 2. **Know the Currency State**  
-ICR visually indicates the strength or weakness of the currency, since the last update, by displaying it in green (stronger) or red (weaker) colour. 
+Instant Currency Rates visually indicates the strength or weakness of the currency, since its last update, by displaying it in green (stronger) or red (weaker) colour. 
 
-3. **Currency Converter**  
+3. **Convert between Currencies**  
 Use the currency converter to compare the conversion rate between multiple currencies simultaneously.
 
 4. **Choose from 150+ Currencies**  
@@ -26,3 +26,28 @@ Add and remove currency pairs easily. Modify the update interval to regulate aut
 
 6. **Get Fast Updates**  
 Though not necessarily noticeable, Instant Currency Rates obtains data faster from the net (it gets the data as a JSON feed which are often smaller in size than an XML feed; smaller file size = faster downloads).
+
+7. **Modify at Will**  
+The source code of the extension is available for free and is released under the open source GPL 3 license.
+
+## Changelog
+
+Version 1.7 -
+New: 'Swap' icon allows user to swap the first and second currency quickly.  
+
+Version 1.6 -  
+New: Extension icon for Mac / Retina displays.  
+Updated: Updated copyright year.  
+
+Version 1.5 -  
+New: Currency converter to compare conversion rates with multiple currencies.  
+
+Version 1.3 -  
+New: Allow user to change the time each pair is displayed.  
+New: Link to online support page.  
+Fixed: Update interval changes were only applied on browser restart.  
+Fixed: Save button didn't disable on submit.  
+
+Version 1.1 -  
+Fixed: Options page reloaded when any form element had focus and ENTER key was pressed.  
+Updated: Design changes made to Options page.  
