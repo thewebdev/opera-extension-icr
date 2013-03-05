@@ -85,6 +85,9 @@ a:hover {
 #input select {
 	margin:2px 2px 4px 2px;
 } 
+#swap {
+	cursor: pointer;	
+}
 .noline {
 	margin: 1px;
 	padding: 6px 5px;

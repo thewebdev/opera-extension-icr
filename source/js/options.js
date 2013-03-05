@@ -1,4 +1,4 @@
-﻿/*  This file is part of Instant Currency Rates. Instant Currency Rates
+/*  This file is part of Instant Currency Rates. Instant Currency Rates
 	is an Opera extension that lets you view updates to the latest 
 	currency exchange rates in an Opera Speed Dial.
 	
@@ -239,6 +239,23 @@ function unlock() {
 	} else {
 		$('apply').disabled = false;
 	}
+}
+
+function swap() {
+	var first, second;
+	
+	first = $('first').selectedIndex;
+	second = $('second').selectedIndex;
+	
+	if (first !== second) {
+		/* if the index are not same, swap the values */
+		$('first').selectedIndex = second;
+		$('second').selectedIndex = first;
+	} else {
+		/* alert the user */
+		status("Warning: Both currency are the same.")
+	}
+	return;
 }
 
 function apply() {
@@ -552,6 +569,7 @@ function init() {
 	/* monitor for button clicks */
 	$('addpair').addEventListener('click', addPair, false); 
 	$('apply').addEventListener('click', apply, false);
+	$('swap').addEventListener('click', swap, false);
 	
 	/* monitor textbox for key strokes */
 	$('interval').addEventListener('keypress', unlock ,false);
