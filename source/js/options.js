@@ -181,7 +181,8 @@ var currency = {
 	"VND": "Vietnam Dong",
 	"YER": "Yemen Riyal",
 	"ZMK": "Zambian Kwacha",
-	"ZWD": "Zimbabwe dollar"
+	"ZWD": "Zimbabwe dollar",
+	"RSD": "Serbian Dinar"
 };	
 
 function $(v) {
