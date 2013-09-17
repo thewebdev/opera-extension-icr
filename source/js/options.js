@@ -77,11 +77,9 @@ var currency = {
 	"DJF": "Dijibouti Franc",
 	"DOP": "Dominican Peso",
 	"XCD": "East Caribbean Dollar",
-	"ECS": "Ecuador Sucre",
 	"EGP": "Egyptian Pound",
 	"SVC": "El Salvador Colon",
 	"ERN": "Eritrea Nakfa",
-	"EEK": "Estonian Kroon",
 	"ETB": "Ethiopian Birr",
 	"FKP": "Falkland Islands Pound",
 	"FJD": "Fiji Dollar",
@@ -181,7 +179,8 @@ var currency = {
 	"VND": "Vietnam Dong",
 	"YER": "Yemen Riyal",
 	"ZMK": "Zambian Kwacha",
-	"ZWD": "Zimbabwe dollar"
+	"ZWD": "Zimbabwe dollar",
+	"RSD": "Serbian Dinar"
 };	
 
 function $(v) {
