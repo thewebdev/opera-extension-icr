@@ -76,7 +76,6 @@ var currency = {
 	"EGP": "Egyptian Pound",
 	"SVC": "El Salvador Colon",
 	"ERN": "Eritrea Nakfa",
-	"EEK": "Estonian Kroon",
 	"ETB": "Ethiopian Birr",
 	"FKP": "Falkland Islands Pound",
 	"FJD": "Fiji Dollar",
