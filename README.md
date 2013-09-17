@@ -32,6 +32,9 @@ The source code of the extension is available for free and is released under the
 
 ## Changelog
 
+*Version 1.8* -  
+Updated: Added RSD; removed ECS.
+
 *Version 1.7* -  
 New: 'Swap' icon allows user to swap the first and second currency quickly.  
 
