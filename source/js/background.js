@@ -1,4 +1,4 @@
-﻿/*  This file is part of Instant Currency Rates. Instant Currency Rates
+/*  This file is part of Instant Currency Rates. Instant Currency Rates
 	is an Opera extension that lets you view updates to the latest 
 	currency exchange rates in an Opera Speed Dial.
 	
