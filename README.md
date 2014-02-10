@@ -5,7 +5,7 @@ Instant Currency Rates (ICR) is an Opera extension that lets you view the latest
 	Download: https://addons.opera.com/en/extensions/details/instant-currency-rates/
 	Website: http://currencyrate.tumblr.com/
 	Source: https://github.com/thewebdev/opera-extension-icr.git
-	Email: thewebdev@myopera.com
+	Email: thewebdev@yandex.com
 
 ## Features
 
@@ -19,7 +19,7 @@ Instant Currency Rates visually indicates the strength or weakness of the curren
 Use the currency converter to compare the conversion rate between multiple currencies simultaneously.
 
 4. **Choose from 150+ Currencies**  
-You can select currency pairs from any of the 153 currencies currently in use in the world. 
+You can select currency pairs from any of the 154 currencies currently in use in the world. 
 
 5. **Customisable**  
 Add and remove currency pairs easily. Modify the update interval to regulate automatic update. Change the display delay to adjust the time each pair is displayed.
