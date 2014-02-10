@@ -32,6 +32,10 @@ The source code of the extension is available for free and is released under the
 
 ## Changelog
 
+*Version 12.10* -  
+New: Revised versioning scheme.
+Updated: Added ANZ to currency list.
+
 *Version 1.8* -  
 Updated: Added RSD; removed ECS, EEK.
 
