@@ -60,6 +60,7 @@ var currency = {
     "BZD": "Belize Dollar",
     "BMD": "Bermuda Dollar",
     "BTN": "Bhutan Ngultrum",
+    "BTC": "Bitcoin",
     "BOB": "Bolivian Boliviano",
     "BWP": "Botswana Pula",
     "BRL": "Brazilian Real",
@@ -156,6 +157,7 @@ var currency = {
     "WST": "Samoa Tala",
     "STD": "Sao Tome Dobra",
     "SAR": "Saudi Arabian Riyal",
+    "RSD": "Serbian Dinar",
     "SCR": "Seychelles Rupee",
     "SLL": "Sierra Leone Leone",
     "XAG": "Silver Ounces",
@@ -185,8 +187,7 @@ var currency = {
     "VND": "Vietnam Dong",
     "YER": "Yemen Riyal",
     "ZMK": "Zambian Kwacha",
-    "ZWD": "Zimbabwe dollar",
-    "RSD": "Serbian Dinar"
+    "ZWD": "Zimbabwe dollar"
 };
 
 function $(v) {
@@ -276,7 +277,9 @@ function apply() {
         li,
         save,
         id,
-        e;
+        e,
+        x,
+        btc;
 
     save = false;
 
@@ -341,6 +344,23 @@ function apply() {
 
     /* store the changes in currency pair */
     if (save) {
+
+        // check for Bitcoin currency
+        btc = false;
+
+        for (x = 0; x < pairs.length; x++) {
+            if ((pairs[x].toUpperCase().search("BTC")) !== -1) {
+                btc = true;
+                break;
+            }
+        }
+
+        if (btc) {
+            widget.preferences.getbtc = "1";
+        } else {
+            widget.preferences.getbtc = "0";
+        }
+
         widget.preferences.pairs = JSON.stringify(pairs);
     }
 
@@ -434,7 +454,7 @@ function addPair() {
         a,
         tx;
 
-    if (count === max) {
+    if (count === parseInt(max, 10)) {
         /* validation - 5+ pair not allowed */
         status("Error: Maximum limit of " + max + " pairs reached.");
         return;

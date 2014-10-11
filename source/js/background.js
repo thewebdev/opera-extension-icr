@@ -28,6 +28,8 @@
 
 var timeIt = null; // data refresh timer
 var slider; // slide time delay
+var data; // raw currency feed
+var btcFeed; // raw BTC feed
 var rates = {};
 
 function $(v) {
@@ -332,7 +334,7 @@ function refDial(cmd, out) {
     }
 }
 
-function update(input) {
+function update() {
     /*  Process the feed data here
     and extract the currency pair
     needed. Prepare it for output. */
@@ -348,11 +350,15 @@ function update(input) {
         resources,
         fields,
         parsedList,
+        btc,
+        toUSD,
         out,
         r,
         i,
-        state;
+        state,
+        input;
 
+    input = data;
     parsedList = {};
     out = [];
 
@@ -376,6 +382,16 @@ function update(input) {
 
             parsedList[temp3] = [temp1, temp2];
             rates[temp3] = [temp1];
+        }
+
+        /* 1.5 Add bitcoin rate if specified */
+        btc = widget.preferences.getbtc;
+        btc = parseInt(btc, 10);
+
+        if (btc) {
+            toUSD = 1 / btcFeed.bpi.USD.rate_float;
+            parsedList.BTC = [toUSD, 0];
+            rates.BTC = [toUSD];
         }
 
         /*  2. Get the user specified currency pairs */
@@ -467,13 +483,48 @@ function update(input) {
     }
 }
 
+function getBtcFeed() {
+    /* Gets the btc rate data from
+       Coindesk.com as a JSON feed. */
+
+    var url,
+        ext;
+
+    url = "http://api.coindesk.com/v1/bpi/currentprice/USD.json";
+
+    refDial('wait');
+    ext = new XMLHttpRequest();
+
+    ext.open('GET', url, true);
+
+    ext.onreadystatechange = function (event) {
+        if (this.readyState === 4) {
+            if (this.status === 200 && this.responseText) {
+                btcFeed = JSON.parse(this.responseText);
+                update();
+            } else {
+                /* possible network error -
+                   tell the user. */
+
+                refDial('hang');
+            }
+        }
+    };
+
+    ext.send();
+    return;
+}
+
 function getData() {
     /* Gets the currency rate data from
        Yahoo finance as a JSON feed. */
 
-    var data,
-        url,
-        ext;
+    var url,
+        ext,
+        btc;
+
+    btc = widget.preferences.getbtc;
+    btc = parseInt(btc, 10);
 
     url = "http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote;currency=true?view=basic&format=json";
 
@@ -486,7 +537,12 @@ function getData() {
         if (this.readyState === 4) {
             if (this.status === 200 && this.responseText) {
                 data = JSON.parse(this.responseText);
-                update(data);
+
+                if (btc) {
+                    getBtcFeed();
+                } else {
+                    update();
+                }
             } else {
                 /* possible network error -
                    tell the user. */
