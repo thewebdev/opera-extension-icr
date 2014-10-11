@@ -1,26 +1,28 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget 
-	xmlns="http://www.w3.org/ns/widgets" 
-	id="https://addons.opera.com/extensions/details/instant-currency-rates/" 
-	defaultlocale="en" 
-	viewmodes="minimized" 
-	version="12.10">
-	
-	<name short="ExchangeRates">Instant Currency Rates</name>
-	<author email="thewebdev@yandex.com">M Shabeer Ali</author>
-	<!-- original icon credit - http://seifito.deviantart.com/ -->
-	<icon src="pix/icon-64.png"/>
-	<icon src="pix/icon-128.png"/>
-	<feature name="opera:speeddial" required="true">
-		<!-- Link to open when the Speed Dial is clicked -->
-		<param name="url" value="http://finance.yahoo.com/currency-investing"/>
-	</feature>
-	<preference name="interval" value="20"/>
-	<preference name="showfor" value="3"/>	
-	<preference name="maxpairs" value="5" readonly="true"/>
-	<preference name="roundoff" value="3" readonly="true"/>
-	<access origin="http://finance.yahoo.com/" subdomains="true"/>
-	<update-description href="https://extension-updates.opera.com/api/w3c-wd1/update/6015500d-0747-43cd-83a9-86d8da6a3f9c/"/>
-	<license href="http://www.gnu.org/licenses/gpl-3.0.html">Licensed under GPL v3.0</license>
-	<description xml:lang="en">Get updates to the latest currency exchange rate in an Opera Speed Dial.</description>
+﻿<?xml version='1.0' encoding='utf-8'?>
+<widget
+    xmlns="http://www.w3.org/ns/widgets"
+    id="https://addons.opera.com/extensions/details/instant-currency-rates/"
+    defaultlocale="en"
+    viewmodes="minimized"
+    version="12.12">
+
+    <name short="ExchangeRates">Instant Currency Rates</name>
+    <author email="thewebdev@yandex.com">M Shabeer Ali</author>
+    <!-- original icon credit - http://seifito.deviantart.com/ -->
+    <icon src="pix/icon-64.png"/>
+    <icon src="pix/icon-128.png"/>
+    <feature name="opera:speeddial" required="true">
+        <!-- Link to open when the Speed Dial is clicked -->
+        <param name="url" value="http://finance.yahoo.com/currency-investing"/>
+    </feature>
+    <preference name="interval" value="20"/>
+    <preference name="showfor" value="3"/>
+    <preference name="maxpairs" value="5" readonly="true"/>
+    <preference name="roundoff" value="3" readonly="true"/>
+    <preference name="getbtc" value="0"/>
+    <access origin="http://finance.yahoo.com/" subdomains="true"/>
+    <access origin="http://coindesk.com/" subdomains="true"/>
+    <update-description href="https://extension-updates.opera.com/api/w3c-wd1/update/6015500d-0747-43cd-83a9-86d8da6a3f9c/"/>
+    <license href="http://www.gnu.org/licenses/gpl-3.0.html">Licensed under GPL v3.0</license>
+    <description xml:lang="en">Get updates to the latest currency exchange rate in an Opera Speed Dial.</description>
 </widget>
