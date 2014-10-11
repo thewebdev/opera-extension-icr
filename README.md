@@ -1,25 +1,25 @@
-# Instant Currency Rates
+﻿# Instant Currency Rates
 
 Instant Currency Rates (ICR) is an Opera extension that lets you view the latest currency exchange rates directly in an Opera Speed Dial.
 
-	Download: https://addons.opera.com/en/extensions/details/instant-currency-rates/
-	Website: http://currencyrate.tumblr.com/
-	Source: https://github.com/thewebdev/opera-extension-icr.git
-	Email: thewebdev@yandex.com
+    Download: https://addons.opera.com/en/extensions/details/instant-currency-rates/  
+    Website: http://currencyrate.tumblr.com/  
+    Source: https://github.com/thewebdev/opera-extension-icr.git  
+    Email: thewebdev@yandex.com  
 
 ## Features
 
 1. **Monitor Multiple Currencies**  
-ICR allows you to simultaneously view the exchange rates of up to 5 currency pair, in a single Speed Dial. 
+ICR allows you to simultaneously view the exchange rates of up to 5 currency pair, in a single Speed Dial.  
 
 2. **Know the Currency State**  
-Instant Currency Rates visually indicates the strength or weakness of the currency, since its last update, by displaying it in green (stronger) or red (weaker) colour. 
+Instant Currency Rates visually indicates the strength or weakness of the currency, since its last update, by displaying it in green (stronger) or red (weaker) colour.
 
 3. **Convert between Currencies**  
 Use the currency converter to compare the conversion rate between multiple currencies simultaneously.
 
 4. **Choose from 150+ Currencies**  
-You can select currency pairs from any of the 154 currencies currently in use in the world. 
+You can select currency pairs from any of the 154 currencies currently in use in the world.
 
 5. **Customisable**  
 Add and remove currency pairs easily. Modify the update interval to regulate automatic update. Change the display delay to adjust the time each pair is displayed.
@@ -32,12 +32,15 @@ The source code of the extension is available for free and is released under the
 
 ## Changelog
 
+*Version 12.12* -  
+New: Added Bitcoin Data (via Coindesk.com)  
+
 *Version 12.10* -  
-New: Revised versioning scheme.
-Updated: Added ANZ to currency list.
+New: Revised versioning scheme.  
+Updated: Added ANZ to currency list.  
 
 *Version 1.8* -  
-Updated: Added RSD; removed ECS, EEK.
+Updated: Added RSD; removed ECS, EEK.  
 
 *Version 1.7* -  
 New: 'Swap' icon allows user to swap the first and second currency quickly.  
